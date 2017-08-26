@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/_class/NimoDatabaseTestCase.php";
 
 class FooTest extends NimoDatabaseTestCase {
 
-    static private $pdo = null;
+    private $pdo = null;
     private $connection = null;
 
     public function getConnection() {
@@ -13,19 +13,20 @@ class FooTest extends NimoDatabaseTestCase {
         $db_dsn_host = "localhost";
         $db_account  = "nimo";
         $db_password = "nimo";
-        $database_connect_bag = new DatabaseConnectBag( $db_dbname,
-                                                        $db_dsn_type,
-                                                        $db_dsn_host,
-                                                        $db_account,
-                                                        $db_password
+
+        $database_connect_bag = new DatabaseConnectBag();
+        $database_connect_bag->Set(
+            $db_dbname,
+            $db_dsn_type,
+            $db_dsn_host,
+            $db_account,
+            $db_password
         );
 
-        // 設定登入資料庫資訊
         $this->SetLoginDatabaseInfo($database_connect_bag);
 
-        // 保存共用的pdo和connectioin
         $this->connection = parent::getConnection();
-        self::$pdo = $this->GetPdo();
+        $this->pdo        = $this->GetPdo();
 
         return $this->connection;
     }
@@ -36,7 +37,7 @@ class FooTest extends NimoDatabaseTestCase {
 
     public function testSimple() {
         $conn = $this->connection;
-        $pdo = self::$pdo;
+        $pdo = $this->pdo;
 
         $foo = new Foo($pdo);
 
