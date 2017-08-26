@@ -17,17 +17,14 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     }
 
     protected function getConnection() {
-    	if ($this->database_connect_bag === null) {
-    		throw new Exception("should be use SetLoginDatabaseInfo before getConnection");
-    	}
+        $this->checkDataBaseConnectBag();
+
         $database_connect_bag = $this->database_connect_bag;
-        $db_dsn = $database_connect_bag->type
-            .":host="  . $database_connect_bag->host
-            .";dbname=". $database_connect_bag->dbname
-        ;
-    	$db_dbname   = $database_connect_bag->dbname;
-    	$db_username  = $database_connect_bag->username;
-    	$db_password = $database_connect_bag->password;
+
+        $db_dsn      = $this->makeDatabaseDSN($database_connect_bag);
+        $db_dbname   = $database_connect_bag->dbname;
+        $db_username = $database_connect_bag->username;
+        $db_password = $database_connect_bag->password;
 
         if ($this->connection === null) {
             if ($this->pdo == null) {
@@ -45,6 +42,18 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
             );
         }
         return $this->connection;
+    }
+    private function checkDataBaseConnectBag() {
+        if ($this->database_connect_bag === null) {
+            throw new Exception("should be use SetLoginDatabaseInfo before getConnection");
+        }
+    }
+    private function makeDatabaseDSN(DatabaseConnectBag $database_connect_bag) {
+        $db_dsn = $database_connect_bag->type
+            .":host="  . $database_connect_bag->host
+            .";dbname=". $database_connect_bag->dbname
+        ;
+        return $db_dsn;
     }
 
     private function isVarNull($var) {
