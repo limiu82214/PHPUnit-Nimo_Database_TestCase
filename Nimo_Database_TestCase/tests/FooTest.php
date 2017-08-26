@@ -1,10 +1,10 @@
 <?php
 require_once dirname(__FILE__) . "/../src/Foo.php";
-require_once dirname(__FILE__) . "/_class/Nimo_Database_TestCase.php";
+require_once dirname(__FILE__) . "/_class/NimoDatabaseTestCase.php";
 
 // getConnection 和 getDataSet 交由 Nimo_Database_TestCase實作，所以這邊只要繼承
 //      Nimo_Database_TestCase 就可以了
-class FooTest extends Nimo_Database_TestCase {
+class FooTest extends NimoDatabaseTestCase {
 
     static private $pdo = null;
     private $connection = null;

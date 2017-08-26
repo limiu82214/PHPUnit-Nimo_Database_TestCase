@@ -1,2 +1,2 @@
-# PHPUnit-Nimo_Database_TestCase
+# PHPUnit-NimoDatabaseTestCase
 為了更方便使用PHPUnit的資料庫測試而建立的Class

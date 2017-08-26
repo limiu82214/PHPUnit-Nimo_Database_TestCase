@@ -1,6 +1,6 @@
 <?php
 
-class Nimo_Database_TestCase extends PHPUnit_Extensions_Database_TestCase{
+class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
 
     static private $pdo = null;
     private $connection = null;
