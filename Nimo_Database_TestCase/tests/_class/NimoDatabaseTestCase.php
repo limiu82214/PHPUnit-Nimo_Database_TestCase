@@ -24,12 +24,10 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
             return $this->connection;
         }
 
-        if ($this->isImplementedPDO()) {
-            $this->connection = $this->createConnectionByPDO($this->pdo, $db_dbname);
-        } else {
-            $this->implementPDO();
-            $this->connection = $this->createConnectionByPDO($this->pdo, $db_dbname);
+        if ($this->isNotImplementedPdo()) {
+            $this->implementPdo();
         }
+        $this->connection = $this->createConnectionByPdo($this->pdo, $db_dbname);
         return $this->connection;
     }
     private function checkDataBaseConnectBag() {
@@ -37,49 +35,32 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
             throw new Exception("should be use SetLoginDatabaseInfo before getConnection");
         }
     }
-    private function makeDatabaseDSN(DatabaseConnectBag $database_connect_bag) {
-        $db_dsn = $database_connect_bag->type
-            .":host="  . $database_connect_bag->host
-            .";dbname=". $database_connect_bag->dbname
-        ;
-        return $db_dsn;
-    }
     private function isImplementedConnection() {
         return ($this->connection !== null);
     }
-    private function isImplementedPDO() {
-        return ($this->pdo !== null);
+    private function isNotImplementedPdo() {
+        return ($this->pdo === null);
     }
-    private function createConnectionByPDO(PDO $pdo, $dbname) {
-        $connection = $this->createDefaultDBConnection(
-            $pdo,
-            $dbname
-        );
+    private function createConnectionByPdo(PDO $pdo, $dbname) {
+        $connection = $this->createDefaultDBConnection($pdo, $dbname);
         return $connection;
-
     }
-    private function implementPDO() {
+    private function implementPdo() {
         $this->checkDataBaseConnectBag();
-
         $database_connect_bag = $this->database_connect_bag;
 
-        $db_dsn      = $this->makeDatabaseDSN($database_connect_bag);
-        $db_dbname   = $database_connect_bag->dbname;
-        $db_username = $database_connect_bag->username;
-        $db_password = $database_connect_bag->password;
+        $dsn      = $this->getDsnByDatabaseConnectBag($database_connect_bag);
+        $username = $database_connect_bag->username;
+        $password = $database_connect_bag->password;
 
-        $have_account = $this->isVarNull($db_username);
-        $have_password = $this->isVarNull($db_password);
-        if ($have_account AND $have_password) {
-            $this->pdo = new PDO( $db_dsn, $db_username, $db_password);
-        } else {
-            $this->pdo = new PDO( $db_dsn);
-        }
-
+        $this->pdo = new PDO($dsn, $username, $password);
     }
-
-    private function isVarNull($var) {
-    	return ($var === null);
+    private function getDsnByDatabaseConnectBag(DatabaseConnectBag $database_connect_bag) {
+        $dsn = $database_connect_bag->type
+            .":host="  . $database_connect_bag->host
+            .";dbname=". $database_connect_bag->dbname
+        ;
+        return $dsn;
     }
 
     protected function getDataSet() {}
