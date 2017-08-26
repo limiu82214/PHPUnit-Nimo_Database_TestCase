@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . "/DatabaseConnectBag.php";
 
 class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
 
-    static private $pdo = null;
+    private $pdo = null;
     private $connection = null;
 
     private $database_connect_bag = null;
@@ -13,7 +13,7 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     }
 
     public function GetPdo() {
-    	return self::$pdo;
+    	return $this->pdo;
     }
 
     protected function getConnection() {
@@ -30,17 +30,17 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     	$db_password = $database_connect_bag->password;
 
         if ($this->connection === null) {
-            if (self::$pdo == null) {
+            if ($this->pdo == null) {
                 $have_account = $this->isVarNull($db_username);
                 $have_password = $this->isVarNull($db_password);
                 if ($have_account AND $have_password) {
-	                self::$pdo = new PDO( $db_dsn, $db_username, $db_password);
+	                $this->pdo = new PDO( $db_dsn, $db_username, $db_password);
                 } else {
-	                self::$pdo = new PDO( $db_dsn);
+	                $this->pdo = new PDO( $db_dsn);
                 }
             }
             $this->connection = $this->createDefaultDBConnection(
-                self::$pdo,
+                $this->pdo,
                 $db_dbname
             );
         }
