@@ -7,7 +7,16 @@ class FooTest extends NimoDatabaseTestCase {
     private $pdo = null;
     private $connection = null;
 
+    // 登入資料庫
     public function __construct() {
+        $database_connect_bag = $this->getDatabaseConnectBag();
+        $this->SetLoginDatabaseInfo($database_connect_bag);
+
+        $this->connection = parent::GetConn();
+        $this->pdo        = parent::GetPdo();
+    }
+
+    private function getDatabaseConnectBag() {
         $db_dbname   = "test_db";
         $db_dsn_type = "mysql";
         $db_dsn_host = "localhost";
@@ -22,13 +31,10 @@ class FooTest extends NimoDatabaseTestCase {
             $db_account,
             $db_password
         );
-
-        $this->SetLoginDatabaseInfo($database_connect_bag);
-
-        $this->connection = parent::GetConn();
-        $this->pdo        = parent::GetPdo();
+        return $database_connect_bag;
     }
 
+    // 設定資料庫初始資料
     protected function getDataSet() {
         return $this->createArrayDataSet(
             [
