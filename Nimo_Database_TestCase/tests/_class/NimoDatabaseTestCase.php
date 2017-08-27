@@ -15,7 +15,26 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     }
 
     public function GetPdo() {
+        if ($this->isNotImplementedPdo()) {
+            throw new Exception("should be used after SetLoginDatabaseInfo");
+        }
     	return $this->pdo;
+    }
+    private function isNotImplementedPdo() {
+        return ($this->pdo === null);
+    }
+
+    /**
+     * GetConn() is alias to getConnection().
+     */
+    public function GetConn() {
+        return $this->getConnection();
+    }
+    private function isNotImplementedConncetion() {
+        return (!$this->isImplementedConnection());
+    }
+    private function isImplementedConnection() {
+        return ($this->connection !== null);
     }
 
     protected function getConnection() {
@@ -35,14 +54,8 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     }
     private function checkDataBaseConnectBag() {
         if ($this->database_connect_bag === null) {
-            throw new Exception("should be use SetLoginDatabaseInfo before getConnection");
+            throw new Exception("should be used after SetLoginDatabaseInfo");
         }
-    }
-    private function isImplementedConnection() {
-        return ($this->connection !== null);
-    }
-    private function isNotImplementedPdo() {
-        return ($this->pdo === null);
     }
     private function createConnectionByPdo(PDO $pdo, $dbname) {
         $connection = $this->createDefaultDBConnection($pdo, $dbname);
@@ -68,7 +81,7 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
 
     protected function getDataSet() {}
 
-    protected function createArrayDataSet(array $array) {
+    public function createArrayDataSet(array $array) {
         return new NimoDbUnitArrayDataSet($array);
     }
 }

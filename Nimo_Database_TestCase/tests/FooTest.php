@@ -25,7 +25,7 @@ class FooTest extends NimoDatabaseTestCase {
 
         $this->SetLoginDatabaseInfo($database_connect_bag);
 
-        $this->connection = parent::getConnection();
+        $this->connection = parent::GetConn();
         $this->pdo        = parent::GetPdo();
     }
 
