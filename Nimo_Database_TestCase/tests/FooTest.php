@@ -38,7 +38,7 @@ class FooTest extends NimoDatabaseTestCase {
         return $database_connect_bag;
     }
 
-    // 設定資料庫初始資料
+    // 設定每次測試的資料庫初始資料
     protected function getDataSet() {
         return $this->createArrayDataSet(
             [
