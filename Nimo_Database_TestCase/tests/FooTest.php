@@ -7,7 +7,7 @@ class FooTest extends NimoDatabaseTestCase {
     private $pdo = null;
     private $connection = null;
 
-    public function getConnection() {
+    public function __construct() {
         $db_dbname   = "test_db";
         $db_dsn_type = "mysql";
         $db_dsn_host = "localhost";
@@ -26,13 +26,19 @@ class FooTest extends NimoDatabaseTestCase {
         $this->SetLoginDatabaseInfo($database_connect_bag);
 
         $this->connection = parent::getConnection();
-        $this->pdo        = $this->GetPdo();
-
-        return $this->connection;
+        $this->pdo        = parent::GetPdo();
     }
 
     protected function getDataSet() {
-        return $this->createXMLDataSet(__DIR__ . '/_files/testSeedData.xml');
+        return $this->createArrayDataSet(
+            [
+                'test_table' => [
+                    [ "sn" => null, "name" => "nimo", "age" => 25],
+                    [ "sn" => null, "name" => "bloodcat", "age" => 26],
+                ]
+            ]
+        );
+        // return $this->createXMLDataSet(__DIR__ . '/_files/testSeedData.xml');
     }
 
     public function testSimple() {

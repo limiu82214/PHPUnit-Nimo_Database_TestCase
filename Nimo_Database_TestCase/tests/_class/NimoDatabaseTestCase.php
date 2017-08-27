@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . "/DatabaseConnectBag.php";
+require_once dirname(__FILE__) . "/NimoDbUnitArrayDataSet.php";
 
 class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
 
@@ -66,4 +67,8 @@ class NimoDatabaseTestCase extends PHPUnit_Extensions_Database_TestCase{
     }
 
     protected function getDataSet() {}
+
+    protected function createArrayDataSet(array $array) {
+        return new NimoDbUnitArrayDataSet($array);
+    }
 }
