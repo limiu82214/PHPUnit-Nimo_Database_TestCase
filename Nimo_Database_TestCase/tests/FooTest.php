@@ -7,8 +7,12 @@ class FooTest extends NimoDatabaseTestCase {
     private $pdo = null;
     private $connection = null;
 
-    // 登入資料庫
     public function __construct() {
+        // 登入資料庫
+        $this->initialDatabase();
+    }
+
+    private function initialDatabase() {
         $database_connect_bag = $this->getDatabaseConnectBag();
         $this->SetLoginDatabaseInfo($database_connect_bag);
 
