@@ -4,14 +4,14 @@ class NimoDbUnitArrayDataSet extends PHPUnit_Extensions_Database_DataSet_Abstrac
     /**
      * @var array
      */
-    protected $tables = [];
+    protected $tables = array();
 
     /**
      * @param array $data
      */
     public function __construct(array $data) {
         foreach ($data AS $tableName => $rows) {
-            $columns = [];
+            $columns = array();
             if (isset($rows[0])) {
                 $columns = array_keys($rows[0]);
             }
